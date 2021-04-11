@@ -6,7 +6,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.github.ymatoi.noteapp.data.enum.Screen
 
-
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
