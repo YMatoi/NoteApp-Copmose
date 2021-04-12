@@ -1,5 +1,6 @@
 package com.github.ymatoi.noteapp.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -14,5 +15,5 @@ interface NoteDao {
     @Delete
     fun delete(note: Note)
     @Query("select * from note")
-    fun getAll(): Flow<List<Note>>
+    fun getAll(): LiveData<List<Note>>
 }
