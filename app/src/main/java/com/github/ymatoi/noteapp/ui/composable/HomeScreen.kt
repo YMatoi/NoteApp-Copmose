@@ -1,12 +1,17 @@
 package com.github.ymatoi.noteapp.ui.composable
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -35,14 +40,31 @@ class HomeViewModel: ViewModel(), KoinComponent {
 @Composable
 fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = viewModel()) {
     val notes = homeViewModel.notes.observeAsState(emptyList())
-    Column {
-        LazyColumn {
+
+    ConstraintLayout(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+        val (list, fab) = createRefs()
+
+        LazyColumn(
+            modifier = Modifier.constrainAs (list) {
+                top.linkTo(parent.top, margin = 16.dp)
+                bottom.linkTo(parent.bottom, margin = 16.dp)
+                start.linkTo(parent.start, margin = 16.dp)
+                end.linkTo(parent.end, margin = 16.dp)
+            }
+        ) {
             items(notes.value) {
                 Text(text = it.text)
             }
         }
-        Button(onClick = { navController.navigate(Screen.Edit)}) {
-            Text("navigate to edit screen")
+
+        FloatingActionButton(
+            onClick = { navController.navigate(Screen.Edit) },
+            modifier = Modifier.constrainAs(fab) {
+                end.linkTo(parent.end, margin = 16.dp)
+                bottom.linkTo(parent.bottom, margin = 16.dp)
+            }
+        ) {
+            Icon(imageVector = Icons.Filled.Add , contentDescription = "Add")
         }
     }
 }
