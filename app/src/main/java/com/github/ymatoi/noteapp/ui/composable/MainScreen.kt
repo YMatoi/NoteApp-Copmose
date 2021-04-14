@@ -11,6 +11,6 @@ fun MainScreen() {
     val navController = rememberNavController()
     NavHost(navController, startDestination = Screen.Home.name) {
         composable(Screen.Home.name) { HomeScreen(navController) }
-        composable(Screen.Edit.name) { EditScreen() }
+        composable(Screen.Edit.name) { EditScreen(navController) }
     }
 }

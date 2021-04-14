@@ -28,13 +28,6 @@ import org.koin.core.component.inject
 class HomeViewModel: ViewModel(), KoinComponent {
     private val dao: NoteDao by inject()
     val notes = dao.getAll()
-
-    init {
-        //TODO: remove this
-        viewModelScope.launch(Dispatchers.IO) {
-            dao.insertAll(Note(text = "test"))
-        }
-    }
 }
 
 @Composable
