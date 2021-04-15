@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -21,20 +22,24 @@ import com.github.ymatoi.noteapp.data.entity.Note
 import com.github.ymatoi.noteapp.data.enum.Screen
 import com.github.ymatoi.noteapp.util.navigate
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class HomeViewModel: ViewModel(), KoinComponent {
     private val dao: NoteDao by inject()
-    val notes = dao.getAll()
+    val notes = dao.getAll().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 }
 
 @Composable
 fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = viewModel()) {
-    val notes = homeViewModel.notes.observeAsState(emptyList())
+    val notes = homeViewModel.notes.collectAsState()
 
-    ConstraintLayout(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+    ConstraintLayout(modifier = Modifier
+        .fillMaxWidth()
+        .fillMaxHeight()) {
         val (list, fab) = createRefs()
 
         LazyColumn(
