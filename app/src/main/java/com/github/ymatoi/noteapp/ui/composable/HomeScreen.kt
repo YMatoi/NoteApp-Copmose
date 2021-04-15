@@ -9,6 +9,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -35,7 +37,7 @@ class HomeViewModel: ViewModel(), KoinComponent {
 
 @Composable
 fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = viewModel()) {
-    val notes = homeViewModel.notes.collectAsState()
+    val notes by homeViewModel.notes.collectAsState()
 
     ConstraintLayout(modifier = Modifier
         .fillMaxWidth()
@@ -50,7 +52,7 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = view
                 end.linkTo(parent.end, margin = 16.dp)
             }
         ) {
-            items(notes.value) {
+            items(notes) {
                 Text(text = it.text)
             }
         }
